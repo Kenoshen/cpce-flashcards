@@ -1,0 +1,8 @@
+<div id="question" class="mid">
+	<h1>{{question.test}}</h1>
+	<h3>{{question.question}}</h3>
+	<label class="btn btn-primary padding-md margin-md" ng-repeat="answer in answers" ng-click="clickedAnswer(answer)">{{answer}}</label>
+	<div>
+		<rating ng-model="question.difficulty" max="maxDifficulty" readonly="false" ng-click="console.log('update rating to ' + question.difficulty);"></rating>
+	</div>
+</div>

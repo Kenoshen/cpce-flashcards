@@ -1,0 +1,9 @@
+<div ng-controller="TestsCtrl">
+	<h1 class="mid">Tests</h1>
+	<div class="outline round" ng-repeat="(key, val) in tests">
+		<label class="bg">{{key}}</label>
+		<label class="btn btn-primary right padding-md margin-md" ng-click="setCurrentTest(val, key); go(key + '/flashcards')">Flash Cards</label>
+		<label class="btn btn-primary right padding-md margin-md" ng-click="setCurrentTest(val, key); go(key + '/quiz')">Quiz</label>
+		<label class="btn btn-primary right padding-md margin-md" ng-click="setCurrentTest(val, key); go(key + '/new')">Add Question</label>
+	</div>
+</div>

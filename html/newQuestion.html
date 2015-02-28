@@ -1,0 +1,13 @@
+<div ng-controller="NewQuestionCtrl" class="mid">
+	<label>Question: </label>
+	<input ng-model="question.question"><br>
+	<label>Correct Answer: </label>
+	<input ng-model="question.answer"><br>
+	<label>Answer 2: </label>
+	<input ng-model="question.other[0]"><br>
+	<label>Answer 3: </label>
+	<input ng-model="question.other[1]"><br>
+	<label>Answer 4: </label>
+	<input ng-model="question.other[2]"><br>
+	<label class="btn btn-primary" ng-click="save()">Save</label>
+</div>
