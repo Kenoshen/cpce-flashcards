@@ -3,13 +3,13 @@
 	<h3>{{question.question}}</h3>
 	<div ng-show="lastAnswer !== question.answer" class="margin-md">
 		<label>Incorrect...</label>
-		<label class="btn btn-warning padding-md margin-md">{{lastAnswer}}</label><br>
+		<label class="btn btn-warning padding-md margin-md break">{{lastAnswer}}</label><br>
 		<label>Answer:</label>
 	</div>
 	<div ng-show="lastAnswer === question.answer" class="margin-md">
 		<label>Correct!</label>
 	</div>
-	<label class="btn btn-success">{{question.answer}}</label>
+	<label class="btn btn-success break">{{question.answer}}</label>
 	<h3>Click anywhere to continue.</h3>
 	<div>
 		<rating ng-model="question.difficulty" max="maxDifficulty" readonly="false" ng-click="console.log('update rating to ' + question.difficulty);"></rating>

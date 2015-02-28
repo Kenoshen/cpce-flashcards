@@ -1,11 +1,12 @@
 <div ng-controller="QuizCtrl">
 	<question ng-show="!(done)" />
 	<div ng-show="done">
-		<div class="round outline" ng-repeat="q in questions track by $index">
-			<label class="padding-md margin-md">{{q.question}}</label>
-			<label class="btn btn-success right padding-md margin-md">{{q.answer}}</label>
-			<label class="btn btn-warning right padding-md margin-md" ng-show="answered[$index] !== q.answer">{{answered[$index]}}</label>
-		</div>
+		<h1>Results: {{correct}}/{{total}}  {{percentage()}}</h1><br>
 		<label class="btn btn-primary" ng-click="restart()">Restart?</label>
+		<div class="round outline margin-lg" ng-class="{alert: answered[$index] !== q.answer}" ng-repeat="q in questions track by $index">
+			<label class="padding-md margin-md">{{q.question}}</label>
+			<label class="btn btn-success padding-md margin-md break">{{q.answer}}</label>
+			<label class="btn btn-warning padding-md margin-md break" ng-show="answered[$index] !== q.answer">{{answered[$index]}}</label>
+		</div>
 	</div>
 </div>

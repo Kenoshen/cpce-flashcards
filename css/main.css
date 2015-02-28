@@ -1,3 +1,11 @@
+* {
+	font-size: 20px;
+}
+
+*.btn {
+	font-size: 20px;
+}
+
 .view {
 	width: 80%;
 	margin-left: 10%;
@@ -28,6 +36,22 @@
 	padding: 10px;
 }
 
+.padding-lg {
+	padding: 30px;
+}
+
 .margin-md {
 	margin: 10px;
+}
+
+.margin-lg {
+	margin: 20px;
+}
+
+.break {
+	word-wrap: break-word;
+}
+
+.alert {
+	box-shadow: 0px 0px 5px red;
 }
