@@ -98,7 +98,14 @@ app.controller("NewQuestionCtrl", function($scope, $rootScope) {
 	}
 
 	$scope.refresh = function(){
-		$scope.question = {test: $rootScope.currentTestName, question: "", answer: "", other: ["", "", ""]};
+		$scope.question = {
+			test: $rootScope.currentTestName, 
+			question: "", 
+			answer: "", 
+			other: ["", "", ""],
+			category: "Social and Cultural Foundations",
+			notes: ""
+		};
 		$rootScope.focusOn("#question");
 	};
 

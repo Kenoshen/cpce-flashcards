@@ -8,7 +8,11 @@
 	<label>Answer 3: </label>
 	<textarea ng-model="question.other[1]"></textarea><br>
 	<label>Answer 4: </label>
-	<textarea ng-model="question.other[2]" ng-enter="save()"></textarea><br>
+	<textarea ng-model="question.other[2]"></textarea><br>
+	<label>Notes: </label>
+	<textarea ng-model="question.notes"></textarea><br>
+	<label>Category: </label>
+	<input class="long margin-md" ng-model="question.category"><br>
 	<label class="btn btn-primary" ng-click="save()">Save</label>
 	<label class="btn btn-primary" ng-click="addAnotherQuestion()">Add Another Question</label>
 </div>
