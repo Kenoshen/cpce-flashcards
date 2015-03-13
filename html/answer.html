@@ -1,4 +1,4 @@
-<div id="answer" ng-click="nextQuestion()" class="mid">
+<div id="answer" ng-click="nextQuestion()" class="mid" style="width: 100%; min-height: 100%;">
 	<h1>{{question.test}}</h1>
 	<h3>{{question.question}}</h3>
 	<div ng-show="lastAnswer !== question.answer" class="margin-md">
@@ -9,7 +9,9 @@
 	<div ng-show="lastAnswer === question.answer" class="margin-md">
 		<label>Correct!</label>
 	</div>
-	<label class="btn btn-success break">{{question.answer}}</label>
+	<label class="btn btn-success break">{{question.answer}}</label><br><br>
+	<label class="btn btn-info break" ng-show="question.notes">{{question.notes}}</label><br>
+	<label class="btn btn-default padding-md margin-md" ng-show="question.totalAsked">{{question.totalCorrect}} / {{question.totalAsked}}</label><br>
 	<h3>Click anywhere to continue.</h3>
 	<div>
 		<rating ng-model="question.difficulty" max="maxDifficulty" readonly="false" ng-click="console.log('update rating to ' + question.difficulty);"></rating>

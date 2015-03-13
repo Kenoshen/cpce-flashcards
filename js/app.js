@@ -5,7 +5,6 @@ app.run(function($rootScope, $http, $location, $timeout){
 		$rootScope.tests = null;
 		$rootScope.getAll(function(results){
 			$rootScope.tests = results;
-			$rootScope.randomizeTestQuestions();
 		});
 	}
 
@@ -27,10 +26,79 @@ app.run(function($rootScope, $http, $location, $timeout){
 			data: question
 		}).success(function(data){
 			$rootScope.tests = data;
-			$rootScope.randomizeTestQuestions();
 			callback(data)
 		}).error(function(data){
 			callback(data);
+		});
+	};
+
+	$rootScope.updateQuestion = function(question, callback){
+		$http({
+			method: "PUT",
+			url: "./",
+			data: question
+		}).success(function(data){
+			$rootScope.tests = data;
+			callback(data);
+		}).error(function(data){
+			callback(data);
+		});
+	};
+
+	$rootScope.deleteQuestion = function(question, callback){
+		console.log(JSON.stringify(question, undefined, 4));
+		var id = question._id;
+		console.log("DELETE: " + id);
+		$http({
+			method: "DELETE",
+			url: "./",
+			params: {id: id}
+		}).success(function(data){
+			$rootScope.tests = data;
+			callback(data);
+		}).error(function(data){
+			callback(data);
+		});
+	};
+
+	$rootScope.gotQuestionRight = function(question){
+		if (! question.totalAsked){
+			question.totalAsked = 0;
+		}
+		question.totalAsked += 1;
+		if (! question.totalCorrect){
+			question.totalCorrect = 0;
+		}
+		question.totalCorrect += 1;
+		$http({
+			method: "PUT",
+			url: "./stats",
+			params: {
+				correct: true,
+				id: question._id
+			}
+		}).success(function(data){
+		}).error(function(data){
+		});
+	};
+
+	$rootScope.gotQuestionWrong = function(question){
+		if (! question.totalAsked){
+			question.totalAsked = 0;
+		}
+		question.totalAsked += 1;
+		if (! question.totalCorrect){
+			question.totalCorrect = 0;
+		}
+		$http({
+			method: "PUT",
+			url: "./stats",
+			params: {
+				correct: false,
+				id: question._id
+			}
+		}).success(function(data){
+		}).error(function(data){
 		});
 	};
 
@@ -114,6 +182,8 @@ app.config(function($routeProvider) {
 		templateUrl : 'html/quiz.html'
 	}).when('/:test/flashcards', {
 		templateUrl : 'html/flashcards.html'
+	}).when('/:test/view', {
+		templateUrl : 'html/allQuestions.html'
 	}).when('/:test/:id', {
 		templateUrl : 'html/editQuestion.html'
 	}).otherwise({

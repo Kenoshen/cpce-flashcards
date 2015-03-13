@@ -16,6 +16,11 @@ app.controller("FlashCardsCtrl", function($scope, $rootScope, $timeout) {
 
 	$scope.clickedAnswer = function(answer){
 		$scope.lastAnswer = answer;
+		if ($scope.question.answer === $scope.lastAnswer){
+			$rootScope.gotQuestionRight($scope.question);
+		} else {
+			$rootScope.gotQuestionWrong($scope.question);
+		}
 		$timeout(function(){
 			$scope.asking = false;
 		}, 500);
@@ -34,7 +39,7 @@ app.controller("FlashCardsCtrl", function($scope, $rootScope, $timeout) {
 });
 app.controller("QuizCtrl", function($scope, $rootScope, $timeout) {
 	$scope.currentQuestionIndex = -1;
-	$scope.maxQuestions = 50;
+	$scope.maxQuestions = 5;
 	$scope.done = false;
 	$scope.questions = [];
 	$scope.answered = [];
@@ -54,6 +59,11 @@ app.controller("QuizCtrl", function($scope, $rootScope, $timeout) {
 		$scope.answered.push(answer);
 		$scope.total++;
 		$scope.correct += (answer === $scope.question.answer ? 1 : 0);
+		if ($scope.question.answer === answer){
+			$rootScope.gotQuestionRight($scope.question);
+		} else {
+			$rootScope.gotQuestionWrong($scope.question);
+		}
 		$timeout(function(){
 			$scope.nextQuestion();
 		}, 500);
@@ -86,7 +96,53 @@ app.controller("QuizCtrl", function($scope, $rootScope, $timeout) {
 
 	initialize();
 });
+app.controller("ViewTestCtrl", function($scope, $rootScope) {
+	if (!($rootScope.currentTest)){
+		$rootScope.go("");
+	} else {
+		$rootScope.currentTest = $rootScope.tests[$rootScope.currentTestName];
+		$scope.questions = $rootScope.currentTest;
+		$scope.test = $rootScope.currentTestName;
+	}
+
+	$scope.edit = function(question){
+		$rootScope.currentQuestion = question;
+		$rootScope.go("/" + $rootScope.currentTestName + "/" + $rootScope.currentQuestion._id);
+	}
+});
 app.controller("EditQuestionCtrl", function($scope, $rootScope) {
+	$scope.question = {};
+
+	function initialize(){
+		if (!($rootScope.currentTest)){
+			$rootScope.go("");
+		} else {
+			$scope.question = $rootScope.currentQuestion;
+		}
+	}
+
+	$scope.save = function(){
+		$rootScope.updateQuestion($scope.question, function(){
+			$scope.cancel();
+		});
+	};
+
+	$scope.cancel = function(){
+		$rootScope.go("/" + $rootScope.currentTestName + "/view");
+	};
+
+	$scope.delete = function(){
+		$rootScope.deleteQuestion($scope.question, function(){
+			$scope.cancel();
+		});
+	};
+
+	$scope.reset = function(){
+		$scope.question.totalAsked = 0;
+		$scope.question.totalCorrect = 0;
+	};
+
+	initialize();
 });
 app.controller("NewQuestionCtrl", function($scope, $rootScope) {
 	function initialize(){
@@ -103,7 +159,7 @@ app.controller("NewQuestionCtrl", function($scope, $rootScope) {
 			question: "", 
 			answer: "", 
 			other: ["", "", ""],
-			category: "Social and Cultural Foundations",
+			category: "Theories of Counseling and the Helping Relationship",
 			notes: ""
 		};
 		$rootScope.focusOn("#question");

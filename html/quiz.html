@@ -1,12 +1,16 @@
 <div ng-controller="QuizCtrl">
+	<h1 ng-show="!(done)">{{currentQuestionIndex + 1}} / {{maxQuestions}}</h1>
 	<question ng-show="!(done)" />
-	<div ng-show="done">
+	<div ng-show="done" style="">
 		<h1>Results: {{correct}}/{{total}}  {{percentage()}}</h1><br>
 		<label class="btn btn-primary" ng-click="restart()">Restart?</label>
-		<div class="round outline margin-lg" ng-class="{alert: answered[$index] !== q.answer}" ng-repeat="q in questions track by $index">
-			<label class="padding-md margin-md">{{q.question}}</label>
-			<label class="btn btn-success padding-md margin-md break">{{q.answer}}</label>
-			<label class="btn btn-warning padding-md margin-md break" ng-show="answered[$index] !== q.answer">{{answered[$index]}}</label>
+		<div class="round outline margin-lg" ng-class="{alert: (answered[$index] !== q.answer), 'green-outline': (answered[$index] === q.answer)}" ng-repeat="q in questions track by $index">
+			<label class="btn btn-default padding-md margin-md">{{q.category}}</label><br>
+			<label class="padding-md margin-md">{{q.question}}</label><br>
+			<label class="btn btn-warning padding-md margin-md break" ng-show="answered[$index] !== q.answer">{{answered[$index]}}</label><br>
+			<label class="btn btn-success padding-md margin-md break">{{q.answer}}</label><br>
+			<label class="btn btn-info padding-md margin-md" ng-show="q.notes">{{q.notes}}</label><br>
+			<label class="btn btn-default padding-md margin-md" ng-show="q.totalAsked">{{q.totalCorrect}} / {{q.totalAsked}}</label>
 		</div>
 	</div>
 </div>

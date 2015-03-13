@@ -6,6 +6,10 @@
 	font-size: 20px;
 }
 
+*.btn-gray {
+	background-color: gray;
+}
+
 .view {
 	width: 80%;
 	margin-left: 10%;
@@ -40,6 +44,10 @@
 	padding: 30px;
 }
 
+.margin-sm {
+	margin: 2px;
+}
+
 .margin-md {
 	margin: 10px;
 }
@@ -52,10 +60,39 @@
 	word-wrap: break-word;
 }
 
-.alert {
+*.alert {
 	box-shadow: 0px 0px 5px red;
+	background-color: #FF9E9E;
+}
+
+div.green-outline {
+	box-shadow: 0px 0px 5px green;
+	background-color: #7AC27A;
 }
 
 .long {
 	width: 400px;
 }
+
+label {
+	display: inline-block !important;
+	white-space: normal !important;
+}
+
+.ctn {
+   height: auto;
+   overflow: hidden;
+}
+
+.right-half {
+    width: 49%;
+    float: right;
+}
+
+.left-half {
+    float: none; /* not needed, just for clarification */
+    /* the next props are meant to keep this block independent from the other floated one */
+    width: auto;
+    overflow: hidden;
+    text-align: left;
+}​​
