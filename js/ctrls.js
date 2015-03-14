@@ -39,7 +39,7 @@ app.controller("FlashCardsCtrl", function($scope, $rootScope, $timeout) {
 });
 app.controller("QuizCtrl", function($scope, $rootScope, $timeout) {
 	$scope.currentQuestionIndex = -1;
-	$scope.maxQuestions = 5;
+	$scope.maxQuestions = 15;
 	$scope.done = false;
 	$scope.questions = [];
 	$scope.answered = [];
