@@ -114,6 +114,11 @@ app.run(function($rootScope, $http, $location, $timeout){
 		$rootScope.currentTest = test;
 	};
 
+	$rootScope.setCurrentSection = function(sectionName, section){
+		$rootScope.currentSectionName = sectionName;
+		$rootScope.currentSection = section;
+	};
+
 	$rootScope.randomizeAnswers = function(question){
 		var answers = [];
 		answers.push(question.answer);
@@ -130,6 +135,18 @@ app.run(function($rootScope, $http, $location, $timeout){
 				$rootScope.tests[key] = $rootScope.shuffle(test);
 			}
 		}
+	};
+
+	$rootScope.splitIntoSections = function(test){
+		var sections = {};
+		for (var index in test){
+			var q = test[index];
+			if (! sections.hasOwnProperty(q.category)){
+				sections[q.category] = [];
+			}
+			sections[q.category].push(q);
+		}
+		return sections;
 	};
 
 	$rootScope.shuffle = function(array) {
@@ -184,6 +201,10 @@ app.config(function($routeProvider) {
 		templateUrl : 'html/flashcards.html'
 	}).when('/:test/view', {
 		templateUrl : 'html/allQuestions.html'
+	}).when('/:test/sections', {
+		templateUrl : 'html/sections.html'
+	}).when('/:test/sections/:id', {
+		templateUrl : 'html/sectionQuiz.html'
 	}).when('/:test/:id', {
 		templateUrl : 'html/editQuestion.html'
 	}).otherwise({
