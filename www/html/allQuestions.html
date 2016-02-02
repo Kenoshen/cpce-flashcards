@@ -1,0 +1,21 @@
+<div ng-controller="ViewTestCtrl" id="allQuestions" class="mid">
+	<h1>{{test}}</h1>
+	<div class="outline round padding-md margin-md" style="width: 45%; display: inline-block; float: left;" ng-repeat="question in questions track by $index">
+		<label class="btn btn-default">{{question.category}}</label>
+		<div class="ctn">
+			<div class="right-half">
+				<label class="btn btn-success margin-sm">{{question.answer}}</label><br>
+				<label class="btn btn-warning margin-sm">{{question.other[0]}}</label><br>
+				<label class="btn btn-warning margin-sm">{{question.other[1]}}</label><br>
+				<label class="btn btn-warning margin-sm">{{question.other[2]}}</label><br>
+				<label class="btn btn-default margin-sm" ng-show="question.totalAsked">{{question.totalCorrect}} / {{question.totalAsked}}</label>
+			</div>
+			<div class="left-half">
+				<label class="btn btn-primary">{{question.question}}</label>
+				<label class="btn btn-info" ng-show="question.notes">{{question.notes}}</label>
+			</div>
+		</div>
+
+		<label class="btn btn-gray middle-break" ng-click="edit(question)">Edit</label>
+	</div>
+</div>

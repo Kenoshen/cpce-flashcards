@@ -1,0 +1,23 @@
+{
+  "name": "cpce-flashcards",
+  "version": "1.0.0",
+  "description": "helper web app for studying for the CPCE",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kenoshen/cpce-flashcards.git"
+  },
+  "keywords": [
+    "cpce"
+  ],
+  "author": "Michael Wingfield",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kenoshen/cpce-flashcards/issues"
+  },
+  "homepage": "https://github.com/Kenoshen/cpce-flashcards"
+}
