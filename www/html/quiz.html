@@ -1,3 +1,11 @@
 <div ng-controller="QuizCtrl">
-	
+	<div ng-repeat="question in questions track by $index" class="questionSection">
+        <p class="quizQuestion">{{$index}}) {{question.question}}</p>
+        <form action="">
+            <div ng-repeat="answer in question.answers track by $index">
+                <input type="radio" class="quizAnswer" value="{{answer}}">{{letters[$index]}}. {{answer}}</input><br>
+            </div>
+        </form>
+    </div>
+    <button>Submit</button>
 </div>
