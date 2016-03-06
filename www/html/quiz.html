@@ -1,3 +1,18 @@
 <div ng-controller="QuizCtrl">
-	
+    <div ng-if="takingQuiz">
+        <h1>{{testName}}: {{question.category}}</h1>
+        <p><b>{{curQuestionNumber}}/{{totalQuestions}}) {{question.question}}</b></p>
+        <div ng-repeat="potentialAnswer in question.potentialAnswers track by $index">
+            <p class="btn" style="white-space: normal; text-align: left;"
+               ng-click="selectPotentialAnswer(potentialAnswer)"
+               ng-class="{'btn-default': (! showAnswer), 'btn-success': (showAnswer && potentialAnswer === question.answer), 'btn-danger': (showAnswer && potentialAnswer !== question.answer)}">
+                - {{potentialAnswer}}
+            </p>
+        </div>
+        <p ng-if="showAnswer"><b>{{question.totalCorrect}} / {{question.totalAsked}}</b> {{question.notes}}</p>
+        <label class="btn btn-primary" ng-if="showAnswer" ng-click="continueQuiz()">Continue</label>
+    </div>
+    <div ng-if="! takingQuiz">
+        <h1>{{testName}}: {{correctPercentage}}%</h1>
+    </div>
 </div>

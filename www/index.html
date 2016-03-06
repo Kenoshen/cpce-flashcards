@@ -10,13 +10,15 @@
     <!-- Javascript dependencies -->
     <script src="../public/angular/angular.min.js" type="text/javascript"></script>
     <script src="../public/angular-route/angular-route.min.js" type="text/javascript"></script>
+    <script src="../public/angular-bootstrap/ui-bootstrap.min.js" type="text/javascript"></script>
+    <script src="../public/angular-bootstrap/ui-bootstrap-tpls.min.js" type="text/javascript"></script>
     <!-- My Javascript -->
     <script src="js/app.js" type="text/javascript"></script>
-    <script src="js/ctrls.js" type="text/javascript"></script>
+    <script src="js/backend.js" type="text/javascript"></script>
     <script src="js/directives.js" type="text/javascript"></script>
+    <script src="js/ctrls.js" type="text/javascript"></script>
 </head>
 <body>
-    <label ng-click="go('/'); $rootScope.initialize();" class="btn btn-primary">Home</label>
     <div ng-view class="view padding-md"></div>
 </body>
 </html>

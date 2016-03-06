@@ -19,5 +19,15 @@
   "bugs": {
     "url": "https://github.com/Kenoshen/cpce-flashcards/issues"
   },
-  "homepage": "https://github.com/Kenoshen/cpce-flashcards"
+  "homepage": "https://github.com/Kenoshen/cpce-flashcards",
+  "dependencies": {
+    "angular": "^1.5.0",
+    "angular-bootstrap": "^0.12.2",
+    "angular-route": "^1.5.0",
+    "body-parser": "^1.15.0",
+    "bootstrap": "^3.3.6",
+    "express": "^4.13.4",
+    "mongoose": "^4.4.6",
+    "vhost": "^3.0.2"
+  }
 }

@@ -1,18 +1,27 @@
-<div ng-controller="NewQuestionCtrl" class="mid">
-	<label>Question: </label>
-	<textarea ng-model="question.question" id="question"></textarea><br>
-	<label>Correct Answer: </label>
-	<textarea ng-model="question.answer"></textarea><br>
-	<label>Answer 2: </label>
-	<textarea ng-model="question.other[0]"></textarea><br>
-	<label>Answer 3: </label>
-	<textarea ng-model="question.other[1]"></textarea><br>
-	<label>Answer 4: </label>
-	<textarea ng-model="question.other[2]"></textarea><br>
-	<label>Notes: </label>
-	<textarea ng-model="question.notes"></textarea><br>
+<div ng-controller="NewQuestionCtrl">
 	<label>Category: </label>
-	<input class="long margin-md" ng-model="question.category"><br>
-	<label class="btn btn-primary" ng-click="save()">Save</label>
-	<label class="btn btn-primary" ng-click="addAnotherQuestion()">Add Another Question</label>
+	<input class="editQuestionInput" ng-model="question.category"><br>
+	<div class="blue">
+		<label>Question: </label>
+		<textarea ng-model="question.question" id="question" class="editQuestionInput"></textarea>
+	</div>
+	<div class="green">
+		<label>Correct Answer: </label>
+		<textarea ng-model="question.answer" class="editQuestionInput"></textarea>
+	</div>
+	<div class="yellow">
+		<label>Answer 2: </label>
+		<textarea ng-model="question.other[0]" class="editQuestionInput"></textarea><br>
+		<label>Answer 3: </label>
+		<textarea ng-model="question.other[1]" class="editQuestionInput"></textarea><br>
+		<label>Answer 4: </label>
+		<textarea ng-model="question.other[2]" class="editQuestionInput"></textarea>
+	</div>
+	<div class="grey">
+		<label>Notes: </label>
+		<textarea ng-model="question.notes" class="editQuestionInput"></textarea>
+	</div>
+    <label class="btn btn-primary" ng-click="save()">Save</label>
+	<label class="btn btn-warning" ng-click="cancel()">Cancel</label>
+    <label class="btn btn-primary" ng-click="addAnotherQuestion()">Add Another Question</label>
 </div>

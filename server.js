@@ -1,9 +1,9 @@
-var port = 6127
+var port = 9100
 process.argv.forEach(function (val, index, array) {
   console.log("val: " + val);
 	if(index === 2 && val){
     try{
-		    var temp = parseInt(val)
+		var temp = parseInt(val)
         if (temp) port = temp
     } catch (e) {}
 	}
@@ -21,9 +21,12 @@ var bodyParser = require("body-parser");
 // local requires
 var cpce = require("./server/serverApp.js");
 function setup(){
+  	app.use(bodyParser.json({limit: "50mb"}));
+  	cpce(app);
+
+
 	// set up virtual hosts
-	//var vhost = createVHost(app, "dev.bytebreakstudios.com", "CPCE->", "www");
-  cpce(app);
+	// var vhost = createVHost(app, "dev.bytebreakstudios.com", "CPCE->", "www");
 }
 //
 ///////////////////////////////////////////////////////
@@ -64,8 +67,6 @@ function createVHost(app, host, prefix, location){
 	var tempApp = express();
 	tempApp.use(bodyParser.json({limit: "50mb"}));
 	tempApp.use(logging(prefix));
-	tempApp.use(express.static(__dirname + "/" + location));
-	tempApp.use("/public", express.static(__dirname + "/public"));
 	app.use(vhost(host, tempApp));
 	return tempApp;
 }

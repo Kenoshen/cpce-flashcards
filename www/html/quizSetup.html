@@ -1,0 +1,22 @@
+<div ng-controller="QuizSetupCtrl">
+    <label>Number of Questions:</label>
+    <div class="round outline blue padding-md margin-md">
+        <label>Number of Questions:</label><br>
+        <div ng-repeat="(option, activeOrNot) in numberOfQuestionsOptions">
+            <label class="btn btn-primary" ng-click="toggleNumberOfQuestionsOptions(option)" ng-class="{active: activeOrNot}">{{option}}</label>
+        </div>
+    </div>
+
+    <div class="round outline blue padding-md margin-md">
+        <label>Include Sections:</label><br>
+        <div ng-repeat="(sectionName, activeOrNot) in sections">
+            <label class="btn btn-primary" ng-click="toggleSection(sectionName)" ng-class="{active: activeOrNot}">{{sectionName}}</label>
+        </div>
+    </div>
+    <div class="round outline blue padding-md margin-md">
+        <button type="button" class="btn btn-primary" ng-model="showAnswers" btn-checkbox>Show Correct After</button><br>
+        <button type="button" class="btn btn-primary" ng-model="missedQuestions" btn-checkbox>Favor Missed Questions</button><br>
+    </div>
+    <button type="button" class="btn btn-success" ng-click="start()">Start</button>
+    <button type="button" class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

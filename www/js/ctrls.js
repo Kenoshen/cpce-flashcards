@@ -1,108 +1,61 @@
 var app = angular.module("studyApp");
 //
-app.controller("TestsCtrl", function($scope, $rootScope) {
+app.controller("TestsCtrl", function($scope, tests) {
+	$scope.tests = tests;
 });
-app.controller("FlashCardsCtrl", function($scope, $rootScope, $timeout) {
-	$scope.asking = true;
-	$scope.currentQuestionIndex = 0;
+app.controller("QuizCtrl", function($scope, $rootScope, $timeout, tests) {
+    function initialize(){
+        if (! $rootScope.currentQuizConfig){
+            $rootScope.go("")
+        } else {
+            $scope.config = $rootScope.currentQuizConfig;
+            $scope.takingQuiz = true
+            $scope.testName = $rootScope.currentTestName;
+            $scope.curQuestionNumber = 0;
+            $scope.totalQuestions = $scope.config.questions.length
+            $scope.continueQuiz();
+            $scope.correct = 0;
+        }
+    }
 
-	if (!($rootScope.currentTest)){
+    $scope.selectPotentialAnswer = function(potentialAnswer){
+        if ($scope.showAnswer) return;
+        if (potentialAnswer === $scope.question.answer){
+            tests.gotQuestionRight($scope.question);
+            $scope.correct = 1 + $scope.correct;
+        } else {
+            tests.gotQuestionWrong($scope.question);
+        }
+
+        if ($scope.config.showAnswers){
+            $scope.showAnswer = true
+        } else {
+            $scope.continueQuiz();
+        }
+    }
+
+    $scope.continueQuiz = function(){
+        $scope.showAnswer = false;
+        $scope.curQuestionNumber = 1 + $scope.curQuestionNumber;
+        if ($scope.curQuestionNumber > $scope.totalQuestions){
+            $scope.takingQuiz = false;
+
+            $scope.correctPercentage = parseInt(($scope.correct / $scope.totalQuestions) * 100);
+        } else {
+            $scope.question = $scope.config.questions[$scope.curQuestionNumber - 1];
+            $scope.question.potentialAnswers = tests.randomizeAnswers($scope.question)
+        }
+    }
+
+    initialize();
+});
+app.controller("ViewTestCtrl", function($scope, $rootScope, tests) {
+	if (! $rootScope.currentTest){
 		$rootScope.go("");
 	} else {
-		$rootScope.randomizeTestQuestions();
-		$scope.question = $rootScope.currentTest[$scope.currentQuestionIndex];
-		$scope.answers = $rootScope.randomizeAnswers($scope.question);
-	}
-
-	$scope.clickedAnswer = function(answer){
-		$scope.lastAnswer = answer;
-		if ($scope.question.answer === $scope.lastAnswer){
-			$rootScope.gotQuestionRight($scope.question);
-		} else {
-			$rootScope.gotQuestionWrong($scope.question);
-		}
-		$timeout(function(){
-			$scope.asking = false;
-		}, 500);
-	}
-
-	$scope.nextQuestion = function(){
-		$scope.currentQuestionIndex++;
-		if ($scope.currentQuestionIndex >= $rootScope.currentTest.length){
-			$scope.currentQuestionIndex = 0;
-			$rootScope.randomizeTestQuestions();
-		}
-		$scope.question = $rootScope.currentTest[$scope.currentQuestionIndex];
-		$scope.answers = $rootScope.randomizeAnswers($scope.question);
-		$scope.asking = true;
-	};
-});
-app.controller("QuizCtrl", function($scope, $rootScope, $timeout) {
-	$scope.currentQuestionIndex = -1;
-	$scope.maxQuestions = 15;
-	$scope.done = false;
-	$scope.questions = [];
-	$scope.answered = [];
-	$scope.correct = 0;
-	$scope.total = 0;
-
-	function initialize(){
-		if (!($rootScope.currentTest)){
-			$rootScope.go("");
-		} else {
-			$rootScope.randomizeTestQuestions();
-			$scope.nextQuestion();
-		}
-	}
-
-	$scope.clickedAnswer = function(answer){
-		$scope.answered.push(answer);
-		$scope.total++;
-		$scope.correct += (answer === $scope.question.answer ? 1 : 0);
-		if ($scope.question.answer === answer){
-			$rootScope.gotQuestionRight($scope.question);
-		} else {
-			$rootScope.gotQuestionWrong($scope.question);
-		}
-		$timeout(function(){
-			$scope.nextQuestion();
-		}, 500);
-	}
-
-	$scope.nextQuestion = function(){
-		$scope.currentQuestionIndex++;
-		if ($scope.currentQuestionIndex >= $rootScope.currentTest.length || $scope.currentQuestionIndex >= $scope.maxQuestions){
-			$scope.done = true;
-		} else {
-			$scope.question = $rootScope.currentTest[$scope.currentQuestionIndex];
-			$scope.questions.push($scope.question);
-			$scope.answers = $rootScope.randomizeAnswers($scope.question);
-		}
-	};
-
-	$scope.percentage = function(){
-		return parseInt("" + ($scope.correct / $scope.total * 100)) + "%";
-	};
-
-	$scope.restart = function(){
-		$scope.done = false;
-		$scope.currentQuestionIndex = -1;
-		$scope.questions = [];
-		$scope.answered = [];
-		$scope.correct = 0;
-		$scope.total = 0;
-		$scope.nextQuestion();
-	};
-
-	initialize();
-});
-app.controller("ViewTestCtrl", function($scope, $rootScope) {
-	if (!($rootScope.currentTest)){
-		$rootScope.go("");
-	} else {
-		$rootScope.currentTest = $rootScope.tests[$rootScope.currentTestName];
 		$scope.questions = $rootScope.currentTest;
 		$scope.test = $rootScope.currentTestName;
+		$scope.sections = tests.splitIntoSections($scope.questions)
 	}
 
 	$scope.edit = function(question){
@@ -110,76 +63,11 @@ app.controller("ViewTestCtrl", function($scope, $rootScope) {
 		$rootScope.go("/" + $rootScope.currentTestName + "/" + $rootScope.currentQuestion._id);
 	}
 });
-app.controller("SectionsCtrl", function($scope, $rootScope) {
-	if (!($rootScope.currentTest)){
-		$rootScope.go("");
-	} else {
-		$rootScope.currentTest = $rootScope.tests[$rootScope.currentTestName];
-		$scope.sections = $rootScope.splitIntoSections($rootScope.currentTest);
-	}
-});
-app.controller("SectionQuizCtrl", function($scope, $rootScope, $timeout) {
-	$scope.currentQuestionIndex = -1;
-	$scope.done = false;
-	$scope.questions = [];
-	$scope.answered = [];
-	$scope.correct = 0;
-	$scope.total = 0;
-
-	function initialize(){
-		if (!($rootScope.currentTest)){
-			$rootScope.go("");
-		} else {
-			$scope.nextQuestion();
-		}
-	}
-
-	$scope.clickedAnswer = function(answer){
-		$scope.answered.push(answer);
-		$scope.total++;
-		$scope.correct += (answer === $scope.question.answer ? 1 : 0);
-		if ($scope.question.answer === answer){
-			$rootScope.gotQuestionRight($scope.question);
-		} else {
-			$rootScope.gotQuestionWrong($scope.question);
-		}
-		$timeout(function(){
-			$scope.nextQuestion();
-		}, 500);
-	}
-
-	$scope.nextQuestion = function(){
-		$scope.currentQuestionIndex++;
-		if ($scope.currentQuestionIndex >= $rootScope.currentSection.length){
-			$scope.done = true;
-		} else {
-			$scope.question = $rootScope.currentSection[$scope.currentQuestionIndex];
-			$scope.questions.push($scope.question);
-			$scope.answers = $rootScope.randomizeAnswers($scope.question);
-		}
-	};
-
-	$scope.percentage = function(){
-		return parseInt("" + ($scope.correct / $scope.total * 100)) + "%";
-	};
-
-	$scope.restart = function(){
-		$scope.done = false;
-		$scope.currentQuestionIndex = -1;
-		$scope.questions = [];
-		$scope.answered = [];
-		$scope.correct = 0;
-		$scope.total = 0;
-		$scope.nextQuestion();
-	};
-
-	initialize();
-});
-app.controller("EditQuestionCtrl", function($scope, $rootScope) {
+app.controller("EditQuestionCtrl", function($scope, $rootScope, tests) {
 	$scope.question = {};
 
 	function initialize(){
-		if (!($rootScope.currentTest)){
+		if (! $rootScope.currentQuestion){
 			$rootScope.go("");
 		} else {
 			$scope.question = $rootScope.currentQuestion;
@@ -187,7 +75,7 @@ app.controller("EditQuestionCtrl", function($scope, $rootScope) {
 	}
 
 	$scope.save = function(){
-		$rootScope.updateQuestion($scope.question, function(){
+		tests.updateQuestion($scope.question, function(){
 			$scope.cancel();
 		});
 	};
@@ -197,21 +85,16 @@ app.controller("EditQuestionCtrl", function($scope, $rootScope) {
 	};
 
 	$scope.delete = function(){
-		$rootScope.deleteQuestion($scope.question, function(){
+		tests.deleteQuestion($scope.question, function(){
 			$scope.cancel();
 		});
 	};
 
-	$scope.reset = function(){
-		$scope.question.totalAsked = 0;
-		$scope.question.totalCorrect = 0;
-	};
-
 	initialize();
 });
-app.controller("NewQuestionCtrl", function($scope, $rootScope) {
+app.controller("NewQuestionCtrl", function($scope, $rootScope, tests) {
 	function initialize(){
-		if (!($rootScope.currentTest)){
+		if (! $rootScope.currentTest){
 			$rootScope.go("");
 		} else {
 			$scope.refresh();
@@ -231,16 +114,119 @@ app.controller("NewQuestionCtrl", function($scope, $rootScope) {
 	};
 
 	$scope.save = function(){
-		$rootScope.addQuestion($scope.question, function(){
+		tests.addQuestion($scope.question, function(){
 			$rootScope.go("");
 		});
 	}
 
 	$scope.addAnotherQuestion = function(){
-		$rootScope.addQuestion($scope.question, function(){
+		tests.addQuestion($scope.question, function(){
 			$scope.refresh();
 		});
 	}
+
+	$scope.cancel = function(){
+	    $rootScope.go("");
+	}
+
+	initialize();
+});
+app.controller("QuizSetupCtrl", function($scope, $rootScope, tests) {
+	function initialize(){
+		if (! $rootScope.currentTest){
+			$rootScope.go("");
+		} else {
+		    $scope.test = $rootScope.currentTest;
+			$scope.sectionData = tests.splitIntoSections($rootScope.currentTest);
+
+			$scope.numberOfQuestions = "10";
+			$scope.numberOfQuestionsOptions = {
+			    "10": true,
+			    "25": false,
+			    "50": false,
+			    "100": false,
+			    "All": false
+			}
+			$scope.sections = {}
+			for (var sectionName in tests.splitIntoSections($rootScope.currentTest)){
+			    if ($scope.sectionData.hasOwnProperty(sectionName)) $scope.sections[sectionName] = true;
+			}
+
+			$scope.showAnswers = false;
+			$scope.missedQuestions = true;
+		}
+	}
+
+	$scope.cancel = function(){
+	    $rootScope.go("");
+	}
+
+	$scope.setNumberOfQuestions = function(num){
+	    $scope.numberOfQuestions = num;
+	}
+
+	$scope.toggleSection = function(sectionName){
+	    $scope.sections[sectionName] = !($scope.sections[sectionName])
+	}
+
+	$scope.toggleNumberOfQuestionsOptions = function(option){
+	    $scope.numberOfQuestions = option
+	    for (var opt in $scope.numberOfQuestionsOptions){
+	        if (opt === $scope.numberOfQuestions) $scope.numberOfQuestionsOptions[opt] = true
+	        else $scope.numberOfQuestionsOptions[opt] = false
+	    }
+	}
+
+	$scope.cancel = function(){
+	    $rootScope.go("");
+	}
+
+	$scope.start = function(){
+	    console.log("Starting quiz:")
+        console.log("Number of questions: " + $scope.numberOfQuestions)
+        console.log("Sections: " + JSON.stringify($scope.sections))
+        console.log("Show answers: " + $scope.showAnswers)
+        console.log("Favor missed questions: " + $scope.missedQuestions)
+
+        var quizConfig = {
+            showAnswers: $scope.showAnswers,
+            missedQuestions: $scope.missedQuestions,
+            questions: []
+        };
+
+        var totalQuestions = []
+        for (var sectionName in $scope.sections){
+            if ($scope.sections[sectionName]){
+                $scope.sectionData[sectionName].forEach(function(question){
+                    totalQuestions.push(question);
+                })
+            }
+        }
+        totalQuestions = tests.shuffle(totalQuestions)
+        if ($scope.missedQuestions){
+            totalQuestions.sort(function(a, b){
+                return tests.calculatePercentageCorrectOnQuestion(a) - tests.calculatePercentageCorrectOnQuestion(b)
+            })
+        }
+        var getNumOfQuestions = 0;
+        if ($scope.numberOfQuestions === "All") getNumOfQuestions = totalQuestions.length
+        else{
+            try{
+                getNumOfQuestions = parseInt($scope.numberOfQuestions)
+            } catch (e){
+                getNumOfQuestions = 10;
+            }
+        }
+        if (getNumOfQuestions > totalQuestions.length) getNumOfQuestions = totalQuestions.length
+        for (var i = 0; i < getNumOfQuestions; i++){
+            quizConfig.questions.push(totalQuestions[i])
+        }
+        quizConfig.questions = tests.shuffle(quizConfig.questions)
+
+        $rootScope.currentQuizConfig = quizConfig;
+
+        $rootScope.go($rootScope.currentTestName + "/quiz")
+    }
 
 	initialize();
 });
