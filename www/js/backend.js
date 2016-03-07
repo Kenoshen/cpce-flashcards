@@ -44,7 +44,7 @@ app.factory('tests', function($http) {
 	                data.all = testData.data;
 	                callback(data.all)
 	            }, function(error){
-	                throw new Error("There was an error getting the data: " + error)
+	                throw new Error("There was an error getting the data: " + JSON.stringify(error))
 	            })
 	        }
 	    },

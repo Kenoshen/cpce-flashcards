@@ -13,8 +13,9 @@ app.controller("QuizCtrl", function($scope, $rootScope, $timeout, tests) {
             $scope.testName = $rootScope.currentTestName;
             $scope.curQuestionNumber = 0;
             $scope.totalQuestions = $scope.config.questions.length
-            $scope.continueQuiz();
             $scope.correct = 0;
+            $scope.incorrectAnswers = []
+            $scope.continueQuiz();
         }
     }
 
@@ -25,6 +26,7 @@ app.controller("QuizCtrl", function($scope, $rootScope, $timeout, tests) {
             $scope.correct = 1 + $scope.correct;
         } else {
             tests.gotQuestionWrong($scope.question);
+            $scope.incorrectAnswers[$scope.curQuestionNumber] = potentialAnswer;
         }
 
         if ($scope.config.showAnswers){
@@ -45,6 +47,14 @@ app.controller("QuizCtrl", function($scope, $rootScope, $timeout, tests) {
             $scope.question = $scope.config.questions[$scope.curQuestionNumber - 1];
             $scope.question.potentialAnswers = tests.randomizeAnswers($scope.question)
         }
+    }
+
+    $scope.retake = function(){
+        initialize()
+    }
+
+    $scope.back = function(){
+        $rootScope.go("");
     }
 
     initialize();
