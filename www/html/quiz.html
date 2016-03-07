@@ -18,9 +18,9 @@
         <label class="btn btn-primary" ng-click="back()">Back</label>
         <div class="round outline margin-md padding-md" ng-repeat="q in config.questions track by $index">
             <p><b>{{$index + 1}}/{{totalQuestions}}) {{q.question}}</b></p>
-            <p ng-if="incorrectAnswers[$index + 1]" class="btn btn-danger">{{incorrectAnswers[$index + 1]}}</p><br>
-            <p class="btn btn-success">{{q.answer}}</p>
-            <p><b>{{question.totalCorrect}} / {{question.totalAsked}}</b> {{question.notes}}</p>
+            <p ng-if="incorrectAnswers[$index + 1]" class="btn btn-danger" style="white-space: normal; text-align: left;">{{incorrectAnswers[$index + 1]}}</p><br>
+            <p class="btn btn-success" style="white-space: normal; text-align: left;">{{q.answer}}</p>
+            <p><b>{{q.totalCorrect}} / {{q.totalAsked}}</b> {{q.notes}}</p>
         </div>
     </div>
 </div>
