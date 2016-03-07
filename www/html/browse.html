@@ -1,0 +1,12 @@
+<div ng-controller="BrowseCtrl">
+	<h1>{{test.name}} ({{test.questions.length}})</h1>
+    <div ng-repeate="section in test.sections" class="questionSection">
+        <h3>{{section}}</h3>
+        <div ng-repeat="question in section.questions track by $index" class="questionSection selectable" ng-click="edit(question)">
+            <p class="quizQuestion">{{$index}}. {{question.question}}</p>
+            <p class="quizAnswer" ng-repeat="answer in question.answers track by $index" ng-class="{correctAnswer: answer.correct}" value="{{answer.text}}">{{letters[$index]}}) {{answer.text}}</p>
+            <p ng-if="question.notes" class="questionNotes">{{question.notes}}</p>
+            <p ng-if="question.totalAsked" class="questionStats">{{question.totalCorrect}} / {{question.totalAsked}}</p>
+        </div>
+    </div>
+</div>

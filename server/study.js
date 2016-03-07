@@ -35,6 +35,40 @@ module.exports = function (){
 		});
 	}
 
+    function getAllTestNames(callback){
+        db.find({$query: {}}, function(err, data){
+            var testsObj = {};
+            data.forEach(function(row){
+                if (! testsObj[row.test]) testsObj[row.test] = 1;
+                else testsObj[row.test] += 1;
+            });
+            var tests = [];
+            for (var testName in testsObj){
+                if (testsObj.hasOwnProperty(testName)){
+                    tests.push({name: testName, count: testsObj[testName]});
+                }
+            }
+            callback(tests);
+        });
+    }
+
+    function getTestCategories(testName, callback){
+        db.find({$query: {test: testName}}, function(err, data){
+            var categoriesObj = {};
+            data.forEach(function(row){
+                if (! categoriesObj[row.category]) categoriesObj[row.category] = 1;
+                else categoriesObj[row.category] += 1;
+            });
+            var categories = [];
+            for (var categoryName in categoriesObj){
+                if (categoriesObj.hasOwnProperty(categoryName)){
+                    categories.push({name: categoryName, count: categoriesObj[categoryName]});
+                }
+            }
+        })
+    }
+
+
 	function add(body, callback){
 		var insert = new db(body);
 		insert.save(function(err, data){

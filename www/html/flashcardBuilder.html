@@ -1,0 +1,10 @@
+<div ng-controller="FlashcardBuilderCtrl">
+    <h1>Select your Flashcards</h1>
+    <form name="flashcardbuilder">
+        <label>Sections</label>
+        <input ng-repeat="section in sections" type="checkbox" name="section" value="{{section}}({{section.length}})">
+        <br>
+
+        <button ng-click="generateFlashcards()">Generate Flashcards</button>
+    </form>
+</div>

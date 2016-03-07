@@ -1,0 +1,16 @@
+<div ng-controller="QuizBuilderCtrl">
+    <h1>Build your Quiz</h1>
+    <form name="quizbuilder">
+        <label>Sections</label>
+        <input ng-repeat="section in sections" type="checkbox" name="section" value="{{section}}({{section.length}})">
+        <br>
+
+        <label>Number of Questions: </label>
+        <select>
+            <option ng-repeat="number in numberOfQuestions" name="numberofquestions" value="number">{{number}}</option>
+        </select>
+        <br>
+
+        <button ng-click="generateQuiz()">Generate Quiz</button>
+    </form>
+</div>
